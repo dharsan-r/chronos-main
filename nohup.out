@@ -1,0 +1,227 @@
+0.2 vabs_avg_RMSE: 0.008449814895825575
+0.2 vabs_best_RMSE: 0.0007988213421434152
+0.2 vabs_worst_RMSE: 0.03699863437209698
+
+0.2 pabs_avg_RMSE: 0.003949041589283035
+0.2 pabs_best_RMSE: 0.0006955018807931307
+0.2 pabs_worst_RMSE: 0.010247503490611664
+
+
+0.3 vabs_avg_RMSE: 0.008343813162232856
+0.3 vabs_best_RMSE: 0.0008357371299091356
+0.3 vabs_worst_RMSE: 0.02884009700617685
+
+0.3 pabs_avg_RMSE: 0.004244952769984952
+0.3 pabs_best_RMSE: 0.001236058070649668
+0.3 pabs_worst_RMSE: 0.032191738715101705
+
+
+0.5 vabs_avg_RMSE: 0.008627179478458404
+0.5 vabs_best_RMSE: 0.000445311871978255
+0.5 vabs_worst_RMSE: 0.057213542404403274
+
+0.5 pabs_avg_RMSE: 0.004052190222079575
+0.5 pabs_best_RMSE: 0.0014424328755651443
+0.5 pabs_worst_RMSE: 0.044503159843159446
+
+
+0.7 vabs_avg_RMSE: 0.008617230043734225
+0.7 vabs_best_RMSE: 0.00034510642331221387
+0.7 vabs_worst_RMSE: 0.042381180680077006
+
+0.7 pabs_avg_RMSE: 0.004073795920186219
+0.7 pabs_best_RMSE: 0.001350576935299057
+0.7 pabs_worst_RMSE: 0.048374550475872996
+
+
+0.8 vabs_avg_RMSE: 0.008691844502729388
+0.8 vabs_best_RMSE: 0.00019660676488887825
+0.8 vabs_worst_RMSE: 0.0731508395521172
+
+1 vabs_avg_RMSE: 0.002506983303099868
+1 vabs_best_RMSE: 0.002506983303099868
+1 vabs_worst_RMSE: 0.002506983303099868
+
+1 pabs_avg_RMSE: 0.0034926940028927054
+1 pabs_best_RMSE: 0.0034926940028927054
+1 pabs_worst_RMSE: 0.0034926940028927054
+
+1 vabs_avg_RMSE: 0.003725352279541255
+1 vabs_best_RMSE: 0.003725352279541255
+1 vabs_worst_RMSE: 0.003725352279541255
+
+1 pabs_avg_RMSE: 0.0038248451068388315
+1 pabs_best_RMSE: 0.0038248451068388315
+1 pabs_worst_RMSE: 0.0038248451068388315
+
+Run 0- 8 (forgot the first run so erros) 1k steps
+
+Avg_RMSE: 0.003505685418516781
+Worst_RMSE: 0.003505685418516781
+Best_RMSE: 0.003505685418516781
+
+Avg_RMSE: 0.006825310032167836
+Worst_RMSE: 0.006825310032167836
+Best_RMSE: 0.006825310032167836
+
+Avg_RMSE: 0.0024540448374671103
+Worst_RMSE: 0.0024540448374671103
+Best_RMSE: 0.0024540448374671103
+
+Avg_RMSE: 0.00685925608696715
+Worst_RMSE: 0.00685925608696715
+Best_RMSE: 0.00685925608696715
+
+Avg_RMSE: 0.0035822487123687687
+Worst_RMSE: 0.0035822487123687687
+Best_RMSE: 0.0035822487123687687
+
+Avg_RMSE: 0.008820536933592532
+Worst_RMSE: 0.008820536933592532
+Best_RMSE: 0.008820536933592532
+
+Avg_RMSE: 0.00263000618679393
+Worst_RMSE: 0.00263000618679393
+Best_RMSE: 0.00263000618679393
+
+Avg_RMSE: 0.007873119306321614
+Worst_RMSE: 0.007873119306321614
+Best_RMSE: 0.007873119306321614
+
+Avg_RMSE: 0.003592899965493539
+Worst_RMSE: 0.003592899965493539
+Best_RMSE: 0.003592899965493539
+
+
+Run 9 - 18 (forgot the first run so erros) 1k steps
+
+Avg_RMSE: 0.00062925712459666
+Worst_RMSE: 0.00062925712459666
+Best_RMSE: 0.00062925712459666
+
+Avg_RMSE: 0.0018456832817570887
+Worst_RMSE: 0.0018456832817570887
+Best_RMSE: 0.0018456832817570887
+
+Avg_RMSE: 0.00011570859345990692
+Worst_RMSE: 0.00011570859345990692
+Best_RMSE: 0.00011570859345990692
+
+Avg_RMSE: 0.0013605768468936063
+Worst_RMSE: 0.0013605768468936063
+Best_RMSE: 0.0013605768468936063
+
+Avg_RMSE: 1.431566819330188e-05
+Worst_RMSE: 1.431566819330188e-05
+Best_RMSE: 1.431566819330188e-05
+
+Avg_RMSE: 0.005553271219304215
+Worst_RMSE: 0.005553271219304215
+Best_RMSE: 0.005553271219304215
+
+Avg_RMSE: 0.0002378187818910075
+Worst_RMSE: 0.0002378187818910075
+Best_RMSE: 0.0002378187818910075
+
+Avg_RMSE: 0.0021021395106326115
+Worst_RMSE: 0.0021021395106326115
+Best_RMSE: 0.0021021395106326115
+
+Avg_RMSE: 2.6291122444272782e-05
+Worst_RMSE: 2.6291122444272782e-05
+Best_RMSE: 2.6291122444272782e-05
+
+Avg_RMSE: 0.000874421579317225
+Worst_RMSE: 0.000874421579317225
+Best_RMSE: 0.000874421579317225
+
+
+
+
+
+
+
+
+
+
+
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+/home/dharsan/anaconda3/envs/chronos/lib/python3.10/site-packages/chronos/chronos.py:507: UserWarning: We recommend keeping prediction length <= 64. The quality of longer predictions may degrade since the model is not optimized for it. 
+  warnings.warn(msg)
+test_Pabs08.npy
+STD:  0.0000000000
+Avg_RMSE:  0.000842256116928289
+Worst_RMSE:  0.000842256116928289
+Best_RMSE:  0.000842256116928289
+
+test_Vabs08.npy
+STD:  0.0000000000
+Avg_RMSE:  0.0027433501450364935
+Worst_RMSE:  0.0027433501450364935
+Best_RMSE:  0.0027433501450364935
+
+test_Pabs07.npy
+STD:  0.0000000000
+Avg_RMSE:  4.85286504826666e-05
+Worst_RMSE:  4.85286504826666e-05
+Best_RMSE:  4.85286504826666e-05
+
+test_Vabs07.npy
+STD:  0.0000000000
+Avg_RMSE:  0.0021400617626527963
+Worst_RMSE:  0.0021400617626527963
+Best_RMSE:  0.0021400617626527963
+
+test_Pabs05.npy
+STD:  0.0000000000
+Avg_RMSE:  3.748212377299426e-05
+Worst_RMSE:  3.748212377299426e-05
+Best_RMSE:  3.748212377299426e-05
+
+test_Vabs05.npy
+STD:  0.0000000000
+Avg_RMSE:  0.0060147314167296895
+Worst_RMSE:  0.0060147314167296895
+Best_RMSE:  0.0060147314167296895
+
+test_Pabs03.npy
+STD:  0.0000000000
+Avg_RMSE:  0.0003275135409003501
+Worst_RMSE:  0.0003275135409003501
+Best_RMSE:  0.0003275135409003501
+
+test_Vabs03.npy
+STD:  0.0000000000
+Avg_RMSE:  0.00199269529030281
+Worst_RMSE:  0.00199269529030281
+Best_RMSE:  0.00199269529030281
+
+test_Pabs02.npy
+STD:  0.0000000000
+Avg_RMSE:  0.00015685683901245782
+Worst_RMSE:  0.00015685683901245782
+Best_RMSE:  0.00015685683901245782
+
+test_Vabs02.npy
+STD:  0.0000000000
+Avg_RMSE:  0.0024257653478761626
+Worst_RMSE:  0.0024257653478761626
+Best_RMSE:  0.0024257653478761626
+
