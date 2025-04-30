@@ -3,6 +3,7 @@
 Created on Wed Sep 25 11:40:36 2024
 
 @author: fakbarifar
+modified by : Dharsan
 """
 
 
@@ -365,10 +366,28 @@ def calculate_max_speed_between_onset_offset(speed_data, detection_method, origi
 # )
 
 
-# Assuming you already have a dataframe 'df'
-nested_arrays = []
+df = pd.DataFrame(np.load("test_stroke_Vabs02.npy"))
 
-# Loop through each column and store its numpy array
+context_arrays = []
+groundtruth_arrays = []
+
+# Loop through each column and split into the gt and the context array
 for col_idx in range(df.shape[1]):
     col_array = df.iloc[:, col_idx].to_numpy()
-    nested_arrays.append(col_array)
+    
+    # Split the array into first 512 elements and last 64 elements
+    first_512 = col_array[:512]
+    last_64 = col_array[-64:]
+    
+    # Append to respective lists with the new names
+    context_arrays.append(first_512)
+    groundtruth_arrays.append(last_64)
+
+
+calculate_posture_speed(cur_trial_context)
+
+# for sub_idx in range(len(context_arrays)):
+#     cur_trial_context = context_arrays[sub_idx]
+#     cur_trial_gt = groundtruth_arrays[sub_idx]
+    
+#     calculate_posture_speed(cur_trial_context)
