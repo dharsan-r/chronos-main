@@ -17,14 +17,14 @@ def load_variable_length_data(h5file, dataset_name):
     return data
 
 # Load selected data for control
-with h5py.File('complete_data/selected_control_raw_VandP_Pcorrected.h5', 'r') as f:
+with h5py.File('selected_control_raw_VandP_Pcorrected.h5', 'r') as f:
     control_Vabs_data = load_variable_length_data(f, 'Vabs')
     control_Pabs_data = load_variable_length_data(f, 'Pabs')
     control_Feats_data = load_variable_length_data(f, 'Feats')
     control_headers = load_variable_length_data(f, 'headers')
 
 # Load selected data for stroke
-with h5py.File('complete_data/selected_control_raw_VandP_Pcorrected.h5', 'r') as f:
+with h5py.File('selected_stroke_raw_VandP_Pcorrected.h5', 'r') as f:
     stroke_Vabs_data = load_variable_length_data(f, 'Vabs')
     stroke_Pabs_data = load_variable_length_data(f, 'Pabs')
     stroke_Feats_data = load_variable_length_data(f, 'Feats')
@@ -92,4 +92,10 @@ def return_data(samples):
     
     return combined_Vabs_df, combined_Pabs_df, control_Pabs_data_df, control_Vabs_data_df, stroke_Pabs_data_df, stroke_Vabs_data_df, combined_headers
 
+
+combined_Vabs_df, combined_Pabs_df, control_Pabs_data_df, control_Vabs_data_df, stroke_Pabs_data_df, stroke_Vabs_data_df, combined_headers = return_data(1152)
+
+print(control_Pabs_data_df)
+print(stroke_Pabs_data_df)
+print(combined_Pabs_df)
 # return_data(1152)

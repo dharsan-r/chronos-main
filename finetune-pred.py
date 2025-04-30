@@ -4,6 +4,7 @@ import pandas as pd
 import torch
 from sklearn.metrics import mean_squared_error
 from tqdm import tqdm
+from scipy import stats
 
 import load_data2
 from sklearn.model_selection import train_test_split
@@ -22,14 +23,15 @@ def run_finetune(pipe_name, test_name):
     
     mini_df = pd.DataFrame(np.load(test_name))
     
-    avg_RMSE, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index = test_df(mini_df, pipeline)
+    avg_RMSE, std_RMSE, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index = test_df(mini_df, pipeline)
 
     file_name_best = test_name[:-4] + "best.png"
     file_name_worst = test_name[:-4] + "worst.png"
-    a = test_name[-4]
-    print(a," Avg_RMSE:",avg_RMSE)
-    print(a," Worst_RMSE:",mean_squared_error(best, truth_best))
-    print(a," Best_RMSE:", mean_squared_error(worst, truth_worst))
+    print(test_name)
+    print("STD: ", std_RMSE)
+    print("Avg_RMSE: ",avg_RMSE)
+    print("Worst_RMSE: ",mean_squared_error(best, truth_best))
+    print("Best_RMSE: ", mean_squared_error(worst, truth_worst))
     
     
     plt.figure(1)
@@ -53,13 +55,14 @@ def run_finetune(pipe_name, test_name):
     print()
 
 
+
 def test_df(df, pipeline):
     columns = df.columns
     train_cols, test_cols = train_test_split(columns, test_size=1, random_state=42)
 
     test_df = df[test_cols]
     num_predictions = test_df.shape[1]
-    p_length = 256
+    p_length = 64
     
     test_last_x = [test_df[col].tail(p_length).tolist() for col in test_df.columns]
     test_df = test_df.iloc[:-p_length].reset_index(drop=True)
@@ -76,29 +79,31 @@ def test_df(df, pipeline):
                 limit_prediction_length=False
         ))
         
-    final =[]
+    final = []
     RMSE = []
-    min_index=max_index=0
-    min_vlaue = 1000
+    min_index = max_index = 0
+    min_value = 1000
     max_value = 0
     
     for x in range(num_predictions):
-        median = np.quantile(forecasts[x][0].numpy(), 0.5 , axis=0)
+        median = np.quantile(forecasts[x][0].numpy(), 0.5, axis=0)
         final.append(median)
         actual = test_last_x[x]
         mse = mean_squared_error(actual, median) # type: ignore
         
-        if mse<min_vlaue:
+        if mse < min_value:
             min_index = x
-            min_vlaue = mse
-        if mse>max_value:
+            min_value = mse
+        if mse > max_value:
             max_index = x
             max_value = mse
         
         RMSE.append(mse)
 
     avg_RMSE = sum(RMSE) / len(RMSE)
-
+    std_RMSE = np.std(RMSE)  # Standard deviation of the RMSE values
+    std_RMSE_precise = f"{std_RMSE:.10f}"
+    
     worst = final[max_index]
     best = final[min_index]
     truth_worst = test_last_x[max_index]
@@ -106,16 +111,16 @@ def test_df(df, pipeline):
     context_worst = test_df.iloc[:, max_index].tolist()
     context_best = test_df.iloc[:, min_index].tolist()
     
-    
     forecast_index = range(len(context_best), len(context_best) + p_length)
     
-    return avg_RMSE, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index
+    return avg_RMSE, std_RMSE_precise, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index
+
     
     
 pipe_name = "run-0"
 test_name = "test_Pabs03.npy"
 
-pipe_names = ["run-0","run-1","run-2","run-3","run-4", "run-5", "run-6", "run-7", "run-8", "run-9"]
+pipe_names = ["run-9","run-10","run-11","run-12","run-13", "run-14", "run-15", "run-16", "run-17", "run-18"]
 test_names = ["test_Pabs08.npy", "test_Vabs08.npy", "test_Pabs07.npy", "test_Vabs07.npy","test_Pabs05.npy", "test_Vabs05.npy","test_Pabs03.npy", "test_Vabs03.npy","test_Pabs02.npy", "test_Vabs02.npy"]
 
 for x in range(len(pipe_names)):

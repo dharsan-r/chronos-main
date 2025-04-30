@@ -10,20 +10,22 @@ from sklearn.model_selection import train_test_split
 
 from chronos import ChronosPipeline
 
-pipeline = ChronosPipeline.from_pretrained(
-    "./scripts/training/output/run-20train/checkpoint-final",
-    device_map="cuda:0",  # use "cpu" for CPU inference and "mps" for Apple Silicon
-    torch_dtype=torch.float64,
-)
-
 # pipeline = ChronosPipeline.from_pretrained(
-#     "amazon/chronos-t5-small",
+#     "./scripts/training/output/run-1-data-80train1k/checkpoint-final",
 #     device_map="cuda:0",  # use "cpu" for CPU inference and "mps" for Apple Silicon
 #     torch_dtype=torch.float64,
 # )
 
+pipeline = ChronosPipeline.from_pretrained(
+    "amazon/chronos-t5-small",
+    device_map="cuda:0",  # use "cpu" for CPU inference and "mps" for Apple Silicon
+    torch_dtype=torch.float64,
+)
+
 # for whole dataset it is 2304 sensor readings 9 * 256,    if not try 768
 combined_Vabs_df, combined_Pabs_df, control_Pabs_data_df, control_Vabs_data_df, stroke_Pabs_data_df, stroke_Vabs_data_df, combined_headers = load_data2.return_data(2304)
+
+mini = pd.DataFrame(np.load("test2-8tr.npy"))
 
 def test_df(df, sizes):
     # Get the list of columns from the DataFrame
@@ -44,7 +46,7 @@ def test_df(df, sizes):
     test_df = test_df.iloc[:-p_length].reset_index(drop=True)
 
     forecasts = []
-    for col in tqdm(test_df.columns, desc="Processing columns"):
+    for col in test_df.columns:
         tensor = torch.tensor(test_df[col].values)
         
         forecasts.append(
@@ -85,13 +87,8 @@ def test_df(df, sizes):
     context_worst = test_df.iloc[:, max_index].tolist()
     context_best = test_df.iloc[:, min_index].tolist()
     
-    print('worst: ',  mean_squared_error(worst, truth_worst) )
-    print('best: ',  mean_squared_error(best, truth_best) )
     
     forecast_index = range(len(context_best), len(context_best) + p_length)
-    
-    
-    print(avg_RMSE)
     
     return avg_RMSE, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index
 
@@ -102,7 +99,9 @@ for sizes in test_sizes:
     avg_RMSE, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index = test_df(combined_Vabs_df, sizes)
     name1 = "vabs_worst" + str(sizes) + ".png"
     name2 = "vabs_best" + str(sizes) + ".png"
-
+    print(str(sizes),"vabs_avg_RMSE:",avg_RMSE)
+    print(str(sizes),"vabs_best_RMSE:", mean_squared_error(best, truth_best))
+    print(str(sizes),"vabs_worst_RMSE:", mean_squared_error(worst, truth_worst))
 
 
     plt.figure(1)
@@ -123,11 +122,18 @@ for sizes in test_sizes:
     plt.savefig(name2)
     plt.close()
 
+    print()
     
     avg_RMSE, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index = test_df(combined_Pabs_df, sizes)
     name1 = "pabs_worst" + str(sizes) + ".png"
     name2 = "pabs_best" + str(sizes) + ".png"
-        
+    print(str(sizes),"pabs_avg_RMSE:",avg_RMSE)
+    print(str(sizes),"pabs_best_RMSE:", mean_squared_error(best, truth_best))
+    print(str(sizes),"pabs_worst_RMSE:", mean_squared_error(worst, truth_worst))
+    
+    print()
+    print()
+    
     plt.figure(1)
     plt.plot(context_worst, color="royalblue", label="historical data")
     plt.plot(forecast_index, truth_worst, color="gold", label="truth")
