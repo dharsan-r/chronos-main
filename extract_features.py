@@ -9,8 +9,7 @@ Created on Wed Sep 25 11:40:36 2024
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
-
-
+import pandas as pd
 
 def calculate_posture_speed(speed_data, original_length, window_size=5, std_threshold=0.005, plot=False):
     """
@@ -50,17 +49,10 @@ def calculate_posture_speed(speed_data, original_length, window_size=5, std_thre
 
     return mean_posture_speed, steady_indices
 
-
 # Example usage - The ultimate "posture speed" is determined as the median of this feature across all trials.
 # posture_speed, _ = calculate_posture_speed(trial, original_length, window_size=1, std_threshold=0.005, plot=False)
 
 
-
-
-
-
-
-#%% Reaction time
 
 def calculate_target_on_index(original_length, signal_length, target_on_offset=200):
     """
@@ -109,10 +101,6 @@ def calculate_reaction_time_slope(speed_data, slope_threshold=0.01, original_len
     
     return onset_index / len(speed_data)
 
-
-
-
-
 # Function to calculate reaction time with original lengths
 def calculate_physical_reaction_time(trial, detection_method, original_length, plot=False):
     """
@@ -156,17 +144,8 @@ def calculate_physical_reaction_time(trial, detection_method, original_length, p
         
     return reaction_time_physical
 
-
-
 # Example usage - The ultimate "Reaction Time" is determined as the median of this feature across all trials.
 # reaction_time_slope = calculate_physical_reaction_time(trial, calculate_reaction_time_slope, original_length, plot=False)
-
-
-
-
-
-
-#%% Speed Maxima Count
 
 
 def calculate_significant_speed_peaks_dynamic_prominence(speed_data, detection_method, original_length, slope_threshold=0.01, plot=False):
@@ -224,10 +203,6 @@ def calculate_significant_speed_peaks_dynamic_prominence(speed_data, detection_m
 # maxima_count_slope, _, _, _ = calculate_significant_speed_peaks_dynamic_prominence(
 #     trial, calculate_reaction_time_slope, original_length, slope_threshold=0.01, plot=False
 # )
-
-
-
-#%% min-max speed difference
 
 def calculate_min_max_speed_difference_dynamic_extrema(speed_data, detection_method, original_length, slope_threshold=0.01, prominence_fraction=(1/14), plot=False):
     """
@@ -290,9 +265,6 @@ def calculate_min_max_speed_difference_dynamic_extrema(speed_data, detection_met
 #     trial, calculate_reaction_time_slope, original_length, slope_threshold=0.01, prominence_fraction=(1/5), plot=False
 # )
 
-
-#%% movement time
-
 def calculate_movement_time(speed_data, detection_method, original_length, slope_threshold=0.01, plot=False):
     """
     Calculate movement time as the duration from movement onset to movement offset,
@@ -339,11 +311,6 @@ def calculate_movement_time(speed_data, detection_method, original_length, slope
 # movement_time_slope, _, _ = calculate_movement_time(
 #     trial, calculate_reaction_time_slope, original_length, slope_threshold=0.01, plot=False
 # )
-
-
-
-#%% max speed
-
 
 def calculate_max_speed_between_onset_offset(speed_data, detection_method, original_length, slope_threshold=0.01, plot=False):
     """
@@ -398,3 +365,10 @@ def calculate_max_speed_between_onset_offset(speed_data, detection_method, origi
 # )
 
 
+# Assuming you already have a dataframe 'df'
+nested_arrays = []
+
+# Loop through each column and store its numpy array
+for col_idx in range(df.shape[1]):
+    col_array = df.iloc[:, col_idx].to_numpy()
+    nested_arrays.append(col_array)
