@@ -15,6 +15,8 @@ def run_finetune(pipe_name, test_name):
     name = "./scripts/training/output/" + pipe_name + "/checkpoint-final"
     print(test_name)
     test_name = "./numpys/" + test_name
+    pred_name = test_name[:-4] +"_preds.npy"
+    print(pred_name)
     
     pipeline = ChronosPipeline.from_pretrained(
         name,
@@ -24,8 +26,14 @@ def run_finetune(pipe_name, test_name):
     
     mini_df = pd.DataFrame(np.load(test_name))
     
-    avg_RMSE, std_RMSE, avg_MASE, std_MASE, avg_WQL, std_WQL, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index = test_df(mini_df, pipeline)
+    avg_RMSE, std_RMSE, avg_MASE, std_MASE, avg_WQL, std_WQL, worst, best, truth_worst, truth_best, context_worst, context_best, forecast_index, final = test_df(mini_df, pipeline)
 
+    print("Final")
+    print(len(final))
+    np.save(pred_name, final)
+    
+    
+    
     file_name_best = test_name[:-4] + "best.png"
     file_name_worst = test_name[:-4] + "worst.png"
     print(test_name)
@@ -59,15 +67,21 @@ def run_finetune(pipe_name, test_name):
     print()
 
 def test_df(df, pipeline):
-    columns = df.columns
-    train_cols, test_cols = train_test_split(columns, test_size=1, random_state=42)
+    # columns = df.columns
+    # train_cols, test_cols = train_test_split(columns, test_size=1, random_state=42)
     
-    test_df = df[test_cols]
-    num_predictions = test_df.shape[1]
+    # test_df = df[test_cols]
+    # num_predictions = test_df.shape[1]
     p_length = 64
     
+    columns = df.columns
+    train_cols, test_cols = train_test_split(columns, test_size=1, random_state=42)
+
+    test_df = df
+    num_predictions = test_df.shape[1]
+    
+    # Prepare data for prediction
     test_last_x = [test_df[col].tail(p_length).tolist() for col in test_df.columns]
-    # Store the values before the prediction period for MASE calculation
     test_previous = [test_df[col].iloc[:-p_length].tolist() for col in test_df.columns]
     test_df = test_df.iloc[:-p_length].reset_index(drop=True)
     
@@ -182,7 +196,7 @@ def test_df(df, pipeline):
     
     return (avg_RMSE, std_RMSE_precise, avg_MASE, std_MASE_precise, 
             avg_WQL, std_WQL_precise, worst, best, truth_worst, 
-            truth_best, context_worst, context_best, forecast_index)
+            truth_best, context_worst, context_best, forecast_index, final)
     
 pipe_name = "run-1"
 test_name = "test_control_Vabs08.npy"
@@ -190,8 +204,8 @@ test_name = "test_control_Vabs08.npy"
 # pipe_names = ["run-9","run-10","run-11","run-12","run-13", "run-14", "run-15", "run-16", "run-17", "run-18"]
 # test_names = ["test_Pabs08.npy", "test_Vabs08.npy", "test_Pabs07.npy", "test_Vabs07.npy","test_Pabs05.npy", "test_Vabs05.npy","test_Pabs03.npy", "test_Vabs03.npy","test_Pabs02.npy", "test_Vabs02.npy"]
 
-pipe_names = ["run-7", "run-7", "run-8", "run-8"]
-test_names = ["test_control_Pabs02.npy", "test_stroke_Pabs02.npy", "test_control_Vabs02.npy", "test_stroke_Vabs02.npy"]
+pipe_names = ["run-8", "run-8"]
+test_names = ["test_control_Vabs02.npy", "test_stroke_Vabs02.npy"]
 
 
 # run_finetune(pipe_name, test_name)

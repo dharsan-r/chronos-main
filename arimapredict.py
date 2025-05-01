@@ -20,11 +20,15 @@ def run_arima_prediction(test_name):
     p_length = 64  # Prediction length
     
     avg_RMSE, std_RMSE, avg_MASE, std_MASE, avg_WQL, std_WQL, worst, best, \
-    truth_worst, truth_best, context_worst, context_best, forecast_index = test_df(mini_df, p_length)
+    truth_worst, truth_best, context_worst, context_best, forecast_index, forecast = test_df(mini_df, p_length)
 
     # File paths for saving plots
     file_name_best = test_name[:-4] + "best.png"
     file_name_worst = test_name[:-4] + "worst.png"
+    file_name_forecast = test_name[:-4] + "_forecast.npy"
+    print(len(forecast))
+    
+    np.save(file_name_forecast, forecast)
     
     # Print metrics
     print(test_name)
@@ -73,7 +77,7 @@ def test_df(df, p_length):
     columns = df.columns
     train_cols, test_cols = train_test_split(columns, test_size=1, random_state=42)
 
-    test_df = df[test_cols]
+    test_df = df
     num_predictions = test_df.shape[1]
     
     # Prepare data for prediction
@@ -88,7 +92,7 @@ def test_df(df, p_length):
     min_index = max_index = 0
     min_value = 1000
     max_value = 0
-
+    preds=[]
     for x in range(num_predictions):
         # Prepare data for this specific column
         series = test_df.iloc[:, x]
@@ -104,6 +108,7 @@ def test_df(df, p_length):
             forecast = [np.nan] * p_length
         
         final.append(forecast)
+        preds.append(forecast)
         
         # RMSE calculation
         mse = mean_squared_error(actual, forecast)
@@ -160,12 +165,10 @@ def test_df(df, p_length):
     
     return (avg_RMSE, f"{std_RMSE:.10f}", avg_MASE, f"{std_MASE:.10f}", 
             avg_WQL, f"{std_WQL:.10f}", worst, best, truth_worst, 
-            truth_best, context_worst, context_best, forecast_index)
+            truth_best, context_worst, context_best, forecast_index, preds)
 
 # List of test names to process
 test_names = [
-    "test_control_Pabs02.npy", 
-    "test_stroke_Pabs02.npy", 
     "test_control_Vabs02.npy", 
     "test_stroke_Vabs02.npy"
 ]

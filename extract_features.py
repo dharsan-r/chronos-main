@@ -379,6 +379,21 @@ def get_all_features(trial):
 
 df = pd.DataFrame(np.load("test_stroke_Vabs02.npy"))
 
+test_names = [
+    "test_control_Vabs02", 
+    "test_stroke_Vabs02"
+]
+test_name = test_names[0]
+
+full_test_name = "./numpys/" + test_name +".npy"
+df = pd.DataFrame(np.load(full_test_name))
+
+print(test_name)
+print("For Chronos")
+
+full_pred_name ="./numpys/chronos_preds/" + test_name +"_preds.npy"
+pred_arrays = np.load(full_pred_name)
+
 context_arrays = []
 groundtruth_arrays = []
 
@@ -394,7 +409,10 @@ for col_idx in range(df.shape[1]):
     context_arrays.append(first_512)
     groundtruth_arrays.append(last_64)
 
+correlation_arrays = pred_arrays
 
+for x in range(125):
+    physical_reaction_time = calculate_physical_reaction_time(pred_arrays[x], calculate_reaction_time_slope, 256)
 allsub_mean_posture_speed = []
 allsub_physical_reaction_time = []
 allsub_significant_peaks_count = []
@@ -432,7 +450,7 @@ for sub_idx in range(len(context_arrays)):
         trial = context_arrays[sub_idx][start_idx:end_idx]
         
         mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(trial)
-        
+
         # Store results
         mean_posture_speed_vector.append(mean_posture_speed)
         physical_reaction_time_vector.append(physical_reaction_time)
@@ -449,8 +467,11 @@ for sub_idx in range(len(context_arrays)):
     allsub_movement_time.append(np.median(movement_time_vector))
     allsub_max_speed.append(np.median(max_speed_vector))
     
-    mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(groundtruth_arrays[sub_idx])
-
+    mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(pred_arrays[sub_idx])
+    
+    # if sub_idx == 5:
+    #     physical_reaction_time = physical_reaction_time+1.1
+    
     allsub_mean_posture_speed_pred.append(mean_posture_speed)
     allsub_physical_reaction_time_pred.append(physical_reaction_time)
     allsub_significant_peaks_count_pred.append(significant_peaks_count)
