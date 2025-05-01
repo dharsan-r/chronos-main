@@ -377,127 +377,150 @@ def get_all_features(trial):
     return mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed
 
 
-df = pd.DataFrame(np.load("test_stroke_Vabs02.npy"))
+
+
+
+
+
+
+
+
+
+def compute_correlation(df, full_pred_name):
+
+    pred_arrays = np.load(full_pred_name)
+
+    context_arrays = []
+    groundtruth_arrays = []
+
+    # Loop through each column and split into the gt and the context array
+    for col_idx in range(df.shape[1]):
+        col_array = df.iloc[:, col_idx].to_numpy()
+        
+        # Split the array into first 512 elements and last 64 elements
+        first_512 = col_array[:512]
+        last_64 = col_array[-64:]
+        
+        # Append to respective lists with the new names
+        context_arrays.append(first_512)
+        groundtruth_arrays.append(last_64)
+
+    correlation_arrays = pred_arrays
+    for x in range(len(pred_arrays)):
+        physical_reaction_time = calculate_physical_reaction_time(pred_arrays[x], calculate_reaction_time_slope, 256)
+    allsub_mean_posture_speed = []
+    allsub_physical_reaction_time = []
+    allsub_significant_peaks_count = []
+    allsub_mean_min_max_diff = []
+    allsub_movement_time = []
+    allsub_max_speed = []
+
+    allsub_mean_posture_speed_pred = []
+    allsub_physical_reaction_time_pred = []
+    allsub_significant_peaks_count_pred = []
+    allsub_mean_min_max_diff_pred = []
+    allsub_movement_time_pred = []
+    allsub_max_speed_pred = []
+
+
+
+    for sub_idx in range(len(context_arrays)):
+        # Empty lists to store results
+        mean_posture_speed_vector = []
+        physical_reaction_time_vector = []
+        significant_peaks_count_vector = []
+        mean_min_max_diff_vector = []
+        movement_time_vector =[]
+        max_speed_vector =[]
+
+        # Get total length of context_arrays[x]
+        total_length = len(context_arrays[sub_idx])
+
+        # Iterate through every 64 elements
+        for start_idx in range(0, total_length, 64):
+            # Get end index (either start_idx + 64 or the end of array)
+            end_idx = min(start_idx + 64, total_length)
+            
+            # Extract the 64-element chunk/trial
+            trial = context_arrays[sub_idx][start_idx:end_idx]
+            
+            mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(trial)
+
+            # Store results
+            mean_posture_speed_vector.append(mean_posture_speed)
+            physical_reaction_time_vector.append(physical_reaction_time)
+            significant_peaks_count_vector.append(significant_peaks_count)
+            mean_min_max_diff_vector.append(mean_min_max_diff)
+            movement_time_vector.append(movement_time)
+            max_speed_vector.append(max_speed)
+        
+        
+        allsub_mean_posture_speed.append(np.median(mean_posture_speed_vector))
+        allsub_physical_reaction_time.append(np.median(physical_reaction_time_vector))
+        allsub_significant_peaks_count.append(np.mean(significant_peaks_count))
+        allsub_mean_min_max_diff.append(np.mean(mean_min_max_diff_vector))
+        allsub_movement_time.append(np.median(movement_time_vector))
+        allsub_max_speed.append(np.median(max_speed_vector))
+        
+        mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(groundtruth_arrays[sub_idx])
+        
+        # if sub_idx == 5:
+        #     physical_reaction_time = physical_reaction_time+1.1
+        
+        allsub_mean_posture_speed_pred.append(mean_posture_speed)
+        allsub_physical_reaction_time_pred.append(physical_reaction_time)
+        allsub_significant_peaks_count_pred.append(significant_peaks_count)
+        allsub_mean_min_max_diff_pred.append(mean_min_max_diff)
+        allsub_movement_time_pred.append(movement_time)
+        allsub_max_speed_pred.append(max_speed)
+
+
+
+    corr_mean_posture_speed = np.corrcoef(allsub_mean_posture_speed, allsub_mean_posture_speed_pred)[0, 1]
+    corr_physical_reaction_time = np.corrcoef(allsub_physical_reaction_time, allsub_physical_reaction_time_pred)[0, 1]
+    corr_significant_peaks_count = np.corrcoef(allsub_significant_peaks_count, allsub_significant_peaks_count_pred)[0, 1]
+    corr_mean_min_max_diff = np.corrcoef(allsub_mean_min_max_diff, allsub_mean_min_max_diff_pred)[0, 1]
+    corr_movement_time = np.corrcoef(allsub_movement_time, allsub_movement_time_pred)[0, 1]
+    corr_max_speed = np.corrcoef(allsub_max_speed, allsub_max_speed_pred)[0, 1]
+
+    # Print results
+    print("Pearson Correlations:")
+    print("Mean Posture Speed:", corr_mean_posture_speed)
+    print("Physical Reaction Time:", corr_physical_reaction_time)
+    print("Significant Peaks Count:", corr_significant_peaks_count)
+    print("Mean Min Max Diff:", corr_mean_min_max_diff)
+    print("Movement Time:", corr_movement_time)
+    print("Max Speed:", corr_max_speed)
+
+
+# test_names = [
+#     "test_control_Vabs02", 
+#     "test_stroke_Vabs02"
+# ]
+
+# test_name = test_names[1]
+# df = pd.DataFrame(np.load("./numpys/" + test_name +".npy"))
 
 test_names = [
-    "test_control_Vabs02", 
-    "test_stroke_Vabs02"
+    "control_Vabs_test", 
+    "stroke_Vabs_test"
 ]
-test_name = test_names[0]
 
-full_test_name = "./numpys/" + test_name +".npy"
-df = pd.DataFrame(np.load(full_test_name))
+test_name = test_names[0]
+df = pd.read_csv("numpys/lag/"+ test_name + ".csv")
+df = df.iloc[:, 1:]
 
 print(test_name)
-print("For Chronos")
+# print("For Lag")
+full_pred_name ="./numpys/lag/" + test_name +"_preds.npy"
 
-full_pred_name ="./numpys/chronos_preds/" + test_name +"_preds.npy"
-pred_arrays = np.load(full_pred_name)
+# print("For Chronos")
+# full_pred_name ="./numpys/chronos_preds/" + test_name +"_preds.npy"
+print("For Ground Truth Split 2")
 
-context_arrays = []
-groundtruth_arrays = []
-
-# Loop through each column and split into the gt and the context array
-for col_idx in range(df.shape[1]):
-    col_array = df.iloc[:, col_idx].to_numpy()
-    
-    # Split the array into first 512 elements and last 64 elements
-    first_512 = col_array[:512]
-    last_64 = col_array[-64:]
-    
-    # Append to respective lists with the new names
-    context_arrays.append(first_512)
-    groundtruth_arrays.append(last_64)
-
-correlation_arrays = pred_arrays
-
-for x in range(125):
-    physical_reaction_time = calculate_physical_reaction_time(pred_arrays[x], calculate_reaction_time_slope, 256)
-allsub_mean_posture_speed = []
-allsub_physical_reaction_time = []
-allsub_significant_peaks_count = []
-allsub_mean_min_max_diff = []
-allsub_movement_time = []
-allsub_max_speed = []
-
-allsub_mean_posture_speed_pred = []
-allsub_physical_reaction_time_pred = []
-allsub_significant_peaks_count_pred = []
-allsub_mean_min_max_diff_pred = []
-allsub_movement_time_pred = []
-allsub_max_speed_pred = []
+# print("For Arima")
+# full_pred_name ="./numpys/" + test_name +"_forecast.npy"
 
 
-
-for sub_idx in range(len(context_arrays)):
-    # Empty lists to store results
-    mean_posture_speed_vector = []
-    physical_reaction_time_vector = []
-    significant_peaks_count_vector = []
-    mean_min_max_diff_vector = []
-    movement_time_vector =[]
-    max_speed_vector =[]
-
-    # Get total length of context_arrays[x]
-    total_length = len(context_arrays[sub_idx])
-
-    # Iterate through every 64 elements
-    for start_idx in range(0, total_length, 64):
-        # Get end index (either start_idx + 64 or the end of array)
-        end_idx = min(start_idx + 64, total_length)
-        
-        # Extract the 64-element chunk/trial
-        trial = context_arrays[sub_idx][start_idx:end_idx]
-        
-        mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(trial)
-
-        # Store results
-        mean_posture_speed_vector.append(mean_posture_speed)
-        physical_reaction_time_vector.append(physical_reaction_time)
-        significant_peaks_count_vector.append(significant_peaks_count)
-        mean_min_max_diff_vector.append(mean_min_max_diff)
-        movement_time_vector.append(movement_time)
-        max_speed_vector.append(max_speed)
-    
-    
-    allsub_mean_posture_speed.append(np.median(mean_posture_speed_vector))
-    allsub_physical_reaction_time.append(np.median(physical_reaction_time_vector))
-    allsub_significant_peaks_count.append(np.mean(significant_peaks_count))
-    allsub_mean_min_max_diff.append(np.mean(mean_min_max_diff_vector))
-    allsub_movement_time.append(np.median(movement_time_vector))
-    allsub_max_speed.append(np.median(max_speed_vector))
-    
-    mean_posture_speed, physical_reaction_time, significant_peaks_count, mean_min_max_diff, movement_time, max_speed = get_all_features(pred_arrays[sub_idx])
-    
-    # if sub_idx == 5:
-    #     physical_reaction_time = physical_reaction_time+1.1
-    
-    allsub_mean_posture_speed_pred.append(mean_posture_speed)
-    allsub_physical_reaction_time_pred.append(physical_reaction_time)
-    allsub_significant_peaks_count_pred.append(significant_peaks_count)
-    allsub_mean_min_max_diff_pred.append(mean_min_max_diff)
-    allsub_movement_time_pred.append(movement_time)
-    allsub_max_speed_pred.append(max_speed)
-
-
-
-corr_mean_posture_speed = np.corrcoef(allsub_mean_posture_speed, allsub_mean_posture_speed_pred)[0, 1]
-corr_physical_reaction_time = np.corrcoef(allsub_physical_reaction_time, allsub_physical_reaction_time_pred)[0, 1]
-corr_significant_peaks_count = np.corrcoef(allsub_significant_peaks_count, allsub_significant_peaks_count_pred)[0, 1]
-corr_mean_min_max_diff = np.corrcoef(allsub_mean_min_max_diff, allsub_mean_min_max_diff_pred)[0, 1]
-corr_movement_time = np.corrcoef(allsub_movement_time, allsub_movement_time_pred)[0, 1]
-corr_max_speed = np.corrcoef(allsub_max_speed, allsub_max_speed_pred)[0, 1]
-
-# Print results
-print("Pearson Correlations:")
-print("Mean Posture Speed:", corr_mean_posture_speed)
-print("Physical Reaction Time:", corr_physical_reaction_time)
-print("Significant Peaks Count:", corr_significant_peaks_count)
-print("Mean Min Max Diff:", corr_mean_min_max_diff)
-print("Movement Time:", corr_movement_time)
-print("Max Speed:", corr_max_speed)
-
-    
-    
-    
+compute_correlation(df, full_pred_name)
     

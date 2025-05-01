@@ -94,8 +94,3 @@ def return_data(samples):
 
 
 combined_Vabs_df, combined_Pabs_df, control_Pabs_data_df, control_Vabs_data_df, stroke_Pabs_data_df, stroke_Vabs_data_df, combined_headers = return_data(1152)
-
-print(control_Pabs_data_df)
-print(stroke_Pabs_data_df)
-print(combined_Pabs_df)
-# return_data(1152)
